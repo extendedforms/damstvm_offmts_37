@@ -1,76 +1,341 @@
-EXAM.HTML
-
-
-<!doctype html>
+<!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>NEET PG CBT - Exam</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <title>ZENITH HIGH CBT Exam</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #eef3f9;
+      margin: 0;
+      padding: 0;
+    }
+
+    .topbar {
+      background: #0b2c66;
+      color: white;
+      padding: 14px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: bold;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 20px auto;
+      background: white;
+      padding: 24px;
+      border-radius: 14px;
+      box-shadow: 0 5px 18px rgba(0,0,0,0.12);
+    }
+
+    .question-number {
+      font-size: 20px;
+      font-weight: bold;
+      color: #0b2c66;
+      margin-bottom: 10px;
+    }
+
+    .question-text {
+      font-size: 18px;
+      line-height: 1.5;
+      margin-bottom: 18px;
+    }
+
+    .question-img {
+      max-width: 100%;
+      max-height: 350px;
+      display: block;
+      margin: 15px auto;
+      border-radius: 8px;
+    }
+
+    .option {
+      border: 1px solid #ccc;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      font-size: 17px;
+    }
+
+    .option.selected {
+      background: #dbeafe;
+      border-color: #0b2c66;
+      font-weight: bold;
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    button {
+      padding: 12px 18px;
+      background: #0b2c66;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    button.secondary {
+      background: #555;
+    }
+
+    button.submit {
+      background: #0b7a32;
+      margin-left: auto;
+    }
+
+    .student-info {
+      font-size: 14px;
+    }
+
+    .warning {
+      color: red;
+      font-weight: bold;
+      margin-top: 15px;
+    }
+  </style>
 </head>
+
 <body>
-  <header class="topbar">
-    <div><b>NEET PG CBT</b></div>
-    <div>
-      Time Left: <b id="timeLeft">60:00</b>
-      &nbsp; | &nbsp;
-      Violations: <b id="vio">0</b>
-    </div>
-  </header>
-
-  <div class="layout">
-    <main class="main">
-      <div class="qbox">
-        <div id="qTitle" class="qtitle"></div>
-
-        <div id="qText" class="qtext"></div>
-
-        <!-- ✅ Image will be injected here by exam.js -->
-        <div id="qImgWrap"></div>
-
-        <div id="opts" class="opts"></div>
-
-        <div class="actions">
-          <button id="prevBtn">Previous</button>
-          <button id="clearBtn">Clear Response</button>
-          <button id="markBtn">Mark for Review</button>
-          <button id="nextBtn">Next</button>
-        </div>
-
-        <div class="actions">
-          <button class="danger" id="submitBtn">Submit</button>
-        </div>
-      </div>
-    </main>
-
-    <aside class="palette">
-      <h3>Questions</h3>
-      <div id="pal"></div>
-
-      <div class="legend">
-        <div><span class="dot unanswered"></span> Unanswered</div>
-        <div><span class="dot answered"></span> Answered</div>
-        <div><span class="dot review"></span> Marked</div>
-        <div><span class="dot ansreview"></span> Answered + Marked</div>
-      </div>
-    </aside>
+  <div class="topbar">
+    <div>ZENITH HIGH CBT</div>
+    <div id="timer">Time: 180:00</div>
   </div>
 
-  <!-- ✅ Image Zoom Modal -->
-  <div id="imgModal" class="img-modal" aria-hidden="true">
-    <div class="img-modal-top">
-      <button id="imgFullBtn" class="img-btn">⛶ Fullscreen</button>
-      <button id="imgCloseBtn" class="img-btn danger">✕ Close</button>
+  <div class="container">
+    <div class="student-info" id="studentInfo"></div>
+
+    <div class="question-number" id="questionNumber"></div>
+    <div class="question-text" id="questionText"></div>
+    <img id="questionImage" class="question-img" style="display:none;">
+
+    <div id="optionsBox"></div>
+
+    <div class="nav-buttons">
+      <button class="secondary" onclick="prevQuestion()">Previous</button>
+      <button onclick="nextQuestion()">Next</button>
+      <button class="submit" onclick="confirmSubmit()">Submit Exam</button>
     </div>
 
-    <div class="img-modal-body">
-      <img id="imgModalPic" alt="Question image enlarged" />
-    </div>
+    <div class="warning" id="warning"></div>
   </div>
 
-  <script src="config.js"></script>
   <script src="questions.js"></script>
-  <script src="exam.js"></script>
+
+  <script>
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwWqrXYBHFoZJCohBix9FXKP4BMkZym-r4arYbybFiXLAf78aBQmQSMFSEAp5okNLJs/exec";
+
+    const EXAM_DURATION_SECONDS = 180 * 60;
+
+    let currentIndex = 0;
+    let userAnswers = {};
+    let startedAt = new Date();
+    let timerInterval = null;
+    let submitted = false;
+
+    const candidateId = localStorage.getItem("candidateId") || "";
+    const token = localStorage.getItem("token") || "";
+    const candidateName = localStorage.getItem("candidateName") || "";
+    const candidatePhone = localStorage.getItem("candidatePhone") || "";
+    const candidateEmail = localStorage.getItem("candidateEmail") || "";
+
+    if (!candidateId || !token) {
+      alert("Please login first");
+      window.location.href = "login.html";
+    }
+
+    document.getElementById("studentInfo").innerHTML =
+      "<b>Name:</b> " + candidateName +
+      " | <b>ID:</b> " + candidateId +
+      " | <b>Email:</b> " + candidateEmail;
+
+    function renderQuestion() {
+      const q = window.questions[currentIndex];
+
+      document.getElementById("questionNumber").textContent =
+        "Question " + (currentIndex + 1) + " of " + window.questions.length;
+
+      document.getElementById("questionText").textContent = q.question;
+
+      const img = document.getElementById("questionImage");
+
+      if (q.image && q.image.trim() !== "") {
+        img.src = q.image;
+        img.style.display = "block";
+      } else {
+        img.style.display = "none";
+      }
+
+      const optionsBox = document.getElementById("optionsBox");
+      optionsBox.innerHTML = "";
+
+      q.options.forEach(function(option, index) {
+        const div = document.createElement("div");
+        div.className = "option";
+
+        if (userAnswers[q.id] === index) {
+          div.classList.add("selected");
+        }
+
+        const label = ["A- 1", "B- 2", "C- 3", "D- 4"][index];
+
+        div.textContent = label + ". " + option;
+
+        div.onclick = function() {
+          userAnswers[q.id] = index;
+          renderQuestion();
+        };
+
+        optionsBox.appendChild(div);
+      });
+    }
+
+    function nextQuestion() {
+      if (currentIndex < window.questions.length - 1) {
+        currentIndex++;
+        renderQuestion();
+      }
+    }
+
+    function prevQuestion() {
+      if (currentIndex > 0) {
+        currentIndex--;
+        renderQuestion();
+      }
+    }
+
+    function confirmSubmit() {
+      const ok = confirm("Are you sure you want to submit the exam?");
+      if (ok) {
+        submitExam("manual", false);
+      }
+    }
+
+    async function submitExam(reason, isAuto) {
+      if (submitted) return;
+      submitted = true;
+
+      const endedAt = new Date();
+      const timeTakenSec = Math.floor((endedAt - startedAt) / 1000);
+
+      const qOrder = window.questions.map(q => q.id);
+
+      try {
+        const res = await fetch(SCRIPT_URL, {
+          method: "POST",
+          body: JSON.stringify({
+            action: "submit",
+            candidateId: candidateId,
+            token: token,
+            responses: userAnswers,
+            qOrder: qOrder,
+            startedAtIST: formatLocalDate(startedAt),
+            endedAtIST: formatLocalDate(endedAt),
+            timeTakenSec: timeTakenSec,
+            userAgent: navigator.userAgent,
+            reason: reason,
+            isAuto: isAuto
+          })
+        });
+
+        const result = await res.json();
+
+        if (result.status === "success") {
+          alert("Exam submitted successfully");
+          localStorage.removeItem("token");
+          window.location.href = "thankyou.html";
+        } else {
+          alert(result.message || "Submission failed");
+          submitted = false;
+        }
+
+      } catch (error) {
+        alert("Submission failed. Please check internet and try again.");
+        submitted = false;
+      }
+    }
+
+    function startTimer() {
+      let remaining = EXAM_DURATION_SECONDS;
+
+      timerInterval = setInterval(function() {
+        remaining--;
+
+        const min = Math.floor(remaining / 60);
+        const sec = remaining % 60;
+
+        document.getElementById("timer").textContent =
+          "Time: " + min + ":" + String(sec).padStart(2, "0");
+
+        if (remaining <= 0) {
+          clearInterval(timerInterval);
+          submitExam("time_over", true);
+        }
+      }, 1000);
+    }
+
+    function sendViolation(type, details) {
+      if (!candidateId || !token || submitted) return;
+
+      fetch(SCRIPT_URL, {
+        method: "POST",
+        body: JSON.stringify({
+          action: "violation",
+          candidateId: candidateId,
+          token: token,
+          type: type,
+          details: details || ""
+        })
+      });
+    }
+
+    document.addEventListener("visibilitychange", function() {
+      if (document.hidden) {
+        sendViolation("Tab switched", "Student switched tab or minimized browser");
+      }
+    });
+
+    document.addEventListener("fullscreenchange", function() {
+      if (!document.fullscreenElement) {
+        sendViolation("Fullscreen exited", "Student exited fullscreen mode");
+      }
+    });
+
+    document.addEventListener("contextmenu", function(e) {
+      e.preventDefault();
+      sendViolation("Right click attempted", "Student attempted right click");
+    });
+
+    document.addEventListener("copy", function(e) {
+      e.preventDefault();
+      sendViolation("Copy attempted", "Student attempted copy");
+    });
+
+    window.addEventListener("beforeunload", function() {
+      if (!submitted) {
+        sendViolation("Page refreshed", "Student refreshed, closed, or left page");
+      }
+    });
+
+    function formatLocalDate(date) {
+      return date.toLocaleString("en-IN", {
+        timeZone: "Asia/Kolkata",
+        hour12: false
+      });
+    }
+
+    renderQuestion();
+    startTimer();
+  </script>
 </body>
 </html>
