@@ -1,3 +1,7 @@
+/* =========================
+   GLOBAL
+========================= */
+
 * {
   box-sizing: border-box;
 }
@@ -18,11 +22,52 @@
   --soft: #f8fbff;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   margin: 0;
   font-family: Arial, sans-serif;
   background: var(--bg);
   color: var(--text);
+}
+
+/* =========================
+   TOP BAR
+========================= */
+
+.topbar {
+  background: linear-gradient(90deg, #002f5f, #005b96);
+  color: #ffffff;
+  min-height: 58px;
+  padding: 12px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  font-size: 15px;
+  font-weight: 800;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  box-shadow: 0 4px 16px rgba(0, 47, 95, 0.25);
+}
+
+.topbar > div:first-child,
+.brand {
+  font-size: 18px;
+  font-weight: 900;
+  letter-spacing: 0.3px;
+  line-height: 1.3;
+}
+
+.topbar > div:last-child,
+.meta {
+  background: rgba(255, 255, 255, 0.14);
+  padding: 8px 12px;
+  border-radius: 999px;
+  line-height: 1.35;
 }
 
 /* =========================
@@ -136,43 +181,85 @@ body {
 
 #msg {
   grid-column: 1 / -1;
-  margin: 2px 0 0;
+  margin: 8px 0 0;
   font-size: 15px;
   min-height: 20px;
   text-align: center;
+  font-weight: 700;
+}
+
+/* =========================
+   INSTRUCTIONS PAGE
+========================= */
+
+.ibox {
+  max-width: 900px;
+  margin: 28px auto;
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 30px;
+  box-shadow: 0 10px 30px rgba(11, 44, 102, 0.12);
+  border: 1px solid #e1e8f2;
+}
+
+.ibox h2 {
+  margin: 0 0 24px;
+  font-size: 34px;
+  color: var(--text);
+  font-weight: 900;
+}
+
+.metaRow {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 10px 0 22px;
+}
+
+.pill {
+  background: #eef2f7;
+  padding: 12px 14px;
+  border-radius: 12px;
+  font-size: 16px;
+  line-height: 1.4;
+}
+
+.ibox ul {
+  line-height: 1.8;
+  font-size: 18px;
+}
+
+.btn {
+  background: linear-gradient(90deg, var(--primary), var(--primary-light));
+  color: #ffffff;
+  border: none;
+  padding: 13px 22px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 900;
+  font-size: 16px;
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.status-live {
+  color: #0b7a32;
+}
+
+.status-closed {
+  color: #b00020;
+}
+
+.status-wait {
+  color: #a86400;
 }
 
 /* =========================
    EXAM PAGE
 ========================= */
-
-.topbar {
-  background: linear-gradient(90deg, #002f5f, #005b96);
-  color: #ffffff;
-  min-height: 58px;
-  padding: 12px 18px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 15px;
-  font-weight: 800;
-  position: sticky;
-  top: 0;
-  z-index: 999;
-  box-shadow: 0 4px 16px rgba(0, 47, 95, 0.25);
-}
-
-.topbar > div:first-child {
-  font-size: 18px;
-  font-weight: 900;
-  letter-spacing: 0.3px;
-}
-
-.topbar > div:last-child {
-  background: rgba(255, 255, 255, 0.14);
-  padding: 8px 12px;
-  border-radius: 999px;
-}
 
 .layout {
   display: grid;
@@ -231,6 +318,20 @@ body {
   box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
 }
 
+.media-status,
+.image-status {
+  display: none;
+  padding: 12px;
+  margin: 12px 0;
+  background: #eef3f9;
+  border: 1px solid #d6dce5;
+  border-radius: 8px;
+  color: #003b66;
+  font-size: 14px;
+  font-weight: 800;
+  text-align: center;
+}
+
 .qimg {
   width: 100%;
   max-height: 520px;
@@ -242,6 +343,17 @@ body {
   background: #ffffff;
   padding: 6px;
   cursor: zoom-in;
+  box-shadow: 0 8px 22px rgba(15, 23, 42, 0.12);
+}
+
+.qvideo {
+  width: 100%;
+  max-height: 520px;
+  display: block;
+  margin: 12px auto 20px;
+  border-radius: 14px;
+  border: 1px solid #d9e2ec;
+  background: #000000;
   box-shadow: 0 8px 22px rgba(15, 23, 42, 0.12);
 }
 
@@ -436,6 +548,10 @@ button.danger {
   margin-top: 14px;
   font-size: 14px;
 }
+
+/* =========================
+   IMAGE MODAL
+========================= */
 
 .img-modal {
   display: none;
@@ -633,13 +749,30 @@ button.danger {
     font-size: 13px;
   }
 
-  .topbar > div:first-child {
+  .topbar > div:first-child,
+  .brand {
     font-size: 16px;
   }
 
-  .topbar > div:last-child {
+  .topbar > div:last-child,
+  .meta {
     font-size: 13px;
     padding: 7px 10px;
+  }
+
+  .ibox {
+    margin: 18px 12px;
+    padding: 22px 18px;
+    border-radius: 16px;
+  }
+
+  .ibox h2 {
+    font-size: 30px;
+  }
+
+  .ibox ul {
+    font-size: 17px;
+    padding-left: 24px;
   }
 
   .layout {
@@ -674,9 +807,13 @@ button.danger {
     border-radius: 12px;
   }
 
-  .qimg {
+  .qimg,
+  .qvideo {
     max-height: 360px;
     border-radius: 12px;
+  }
+
+  .qimg {
     padding: 4px;
   }
 
@@ -753,7 +890,8 @@ button.danger {
     font-size: 12px;
   }
 
-  .topbar > div:first-child {
+  .topbar > div:first-child,
+  .brand {
     font-size: 14px;
   }
 }
