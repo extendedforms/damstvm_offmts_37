@@ -978,7 +978,7 @@ window.questions = [
   {
     id: 76,
     image: "images/dpd.mov",
-    question: "A video shows a health worker checking free residual chlorine in drinking water. Which kit is used?",
+    question: "This video shows a health worker checking free residual chlorine in drinking water. Which kit is used?",
     options: [
       "DPD kit",
       "Hardness kit",
@@ -1030,7 +1030,7 @@ window.questions = [
   {
     id: 80,
     image: "images/gambusia.mov",
-    question: "A short video shows small fish released into a pond to control mosquito breeding. Which biological control method is shown?",
+    question: "This short video shows small fish released into a pond to control mosquito breeding. Which biological control method is shown?",
     options: [
       "Gambusia fish",
       "DDT spraying",
@@ -1108,7 +1108,7 @@ window.questions = [
   {
     id: 86,
     image: "images/whitecontainer.mov",
-    question: "A video shows a white translucent puncture-proof container used for biomedical waste disposal. Which item should be discarded in it?",
+    question: "This video shows a white translucent puncture-proof container used for biomedical waste disposal. Which item should be discarded in it?",
     options: [
       "Syringe without needle",
       "Blood bag",
@@ -1615,7 +1615,7 @@ window.questions = [
   {
     id: 125,
     image: "images/icelinerefrigerator.MOV",
-    question: "A video shows a PHC cold-chain unit storing all vaccines in a top-opening cabinet maintaining +2°C to +8°C, even during power cuts. Which equipment is shown?",
+    question: "This video shows a PHC cold-chain unit storing all vaccines in a top-opening cabinet maintaining +2°C to +8°C, even during power cuts. Which equipment is shown?",
     options: [
       "Deep freezer",
       "Cold box",
@@ -2083,7 +2083,7 @@ window.questions = [
   {
     id: 161,
     image: "images/mantoux.mov",
-    question: "A video shows a Mantoux site after 72 hours with a large red area but only a small firm swelling. What should be measured and recorded?",
+    question: "This video shows a Mantoux site after 72 hours with a large red area but only a small firm swelling. What should be measured and recorded?",
     options: [
       "Induration",
       "Erythema",
@@ -2278,7 +2278,7 @@ window.questions = [
   {
     id: 176,
     image: "images/vvm.mov",
-    question: "A video shows a health worker inspecting an Oral Polio Vaccine vial before administration. The inner square of the monitor is clearly darker than the outer circle. What is the most appropriate action?",
+    question: "This video shows a health worker inspecting an Oral Polio Vaccine vial before administration. The inner square of the monitor is clearly darker than the outer circle. What is the most appropriate action?",
     options: [
       "Discard the vaccine immediately",
       "Use the vaccine immediately",
