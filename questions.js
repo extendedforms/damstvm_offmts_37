@@ -793,19 +793,19 @@ window.questions = [
     answerIndex: 0,
     correctAnswerText: "Acamprosate"
   },
-  {
-    id: 62,
-    image: "",
-    question: "A 19-year-old female presents with bilateral parotid gland swelling and noticeable calluses on the dorsum of her hands. Her body mass index (BMI) is 22 kg/m² (normal weight). She reports experiencing recurrent, uncontrollable episodes of consuming abnormally large amounts of food, which are immediately followed by intense emotional anguish and self-induced vomiting. Which of the following is the most likely diagnosis?",
-    options: [
-      "Anorexia nervosa (binge-eating type)",
-      "Bulimia nervosa",
-      "Binge eating disorder",
-      "Restrictive eating disorder"
-    ],
-    answerIndex: 1,
-    correctAnswerText: "Bulimia nervosa"
-  },
+{
+  id: 62,
+  image: "",
+  question: "A 24-year-old man presents with persistent, distressing intrusive thoughts of contamination and spends hours repeatedly washing his hands. If a neuroimaging study were performed on this patient to investigate the underlying etiology, which of the following structural abnormalities is most likely to be found?",
+  options: [
+    "Enlarged lateral ventricles",
+    "Bilateral caudate atrophy",
+    "Hippocampal volume loss",
+    "Globus pallidus calcification"
+  ],
+  answerIndex: 1,
+  correctAnswerText: "Bilateral caudate atrophy"
+},
   {
     id: 63,
     image: "",
